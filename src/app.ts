@@ -16,10 +16,10 @@ export class App {
     try {
       this.initializeMiddlewares();
       this.initializeRoutes();
-     // console.log("Express app initialized");
+      // console.log("Express app initialized");
     } catch (error) {
       console.log("Server Initialization error:", error);
-     // process.exit(1);
+      // process.exit(1);
     }
   }
 
