@@ -19,10 +19,10 @@ const otpSchema = Joi.string()
   });
 
 export const sendOtpValidation = Joi.object({
-  phone: phoneSchema,
+  phoneNumber: phoneSchema,
 });
 
 export const verifyOtpValidation = Joi.object({
-  phone: phoneSchema,
+  phoneNumber: phoneSchema,
   otp: otpSchema,
 });

@@ -1,11 +1,9 @@
 import mongoose from "mongoose";
 import { IUser } from "../interfaces/user.interface";
-declare const userModel: mongoose.Model<IUser, {}, {}, {}, mongoose.Document<unknown, {}, IUser, {}, mongoose.DefaultSchemaOptions> & IUser & Required<{
+declare const userModel: mongoose.Model<IUser, {}, {}, {}, mongoose.Document<unknown, {}, IUser, {}, {}> & IUser & Required<{
     _id: string;
 }> & {
     __v: number;
-} & {
-    id: string;
-}, any, IUser>;
+}, any>;
 export default userModel;
 //# sourceMappingURL=user.model.d.ts.map

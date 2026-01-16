@@ -51,19 +51,14 @@ const generateToken = (user) => {
     return jsonwebtoken_1.default.sign({
         _id: user._id,
         role: user.role,
-    }, process.env.PRIVATE_KEY, { expiresIn: "7d" });
+    }, process.env.PRIVATE_KEY, { expiresIn: "1d" });
 };
 // ================= SEND OTP =================
 const sendOtp = async (req, res, next) => {
     try {
-        const { phone } = req.body;
-        if (!phone) {
-            return res.status(400).json({
-                message: message_1.ERROR_RESPONSE.PHONE_REQUIRED,
-            });
-        }
+        const { phoneNumber } = req.body;
         const otp = (0, OTP_1.generateOTP)();
-        await (0, OTP_1.sendOTP)(phone, otp);
+        await (0, OTP_1.sendOTP)(phoneNumber, otp);
         return res.status(200).json({
             message: message_1.SUCCESS_RESPONSE.OTP_SENT,
         });

@@ -19,7 +19,7 @@ const generateToken = (user: any) => {
             role: user.role,
         },
         process.env.PRIVATE_KEY as string,
-        { expiresIn: "7d" }
+        { expiresIn: "1d" }
     );
 };
 
@@ -30,16 +30,10 @@ export const sendOtp = async (
     next: NextFunction
 ) => {
     try {
-        const { phone } = req.body;
-
-        if (!phone) {
-            return res.status(400).json({
-                message: ERROR_RESPONSE.PHONE_REQUIRED,
-            });
-        }
+        const { phoneNumber } = req.body;
 
         const otp = generateOTP();
-        await sendOTP(phone, otp);
+        await sendOTP(phoneNumber, otp);
 
         return res.status(200).json({
             message: SUCCESS_RESPONSE.OTP_SENT,

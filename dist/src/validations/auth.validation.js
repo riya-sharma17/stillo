@@ -21,10 +21,10 @@ const otpSchema = joi_1.default.string()
     "string.length": "OTP must be 4 digits",
 });
 exports.sendOtpValidation = joi_1.default.object({
-    phone: phoneSchema,
+    phoneNumber: phoneSchema,
 });
 exports.verifyOtpValidation = joi_1.default.object({
-    phone: phoneSchema,
+    phoneNumber: phoneSchema,
     otp: otpSchema,
 });
 //# sourceMappingURL=auth.validation.js.map
