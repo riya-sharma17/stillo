@@ -30,6 +30,12 @@ export class App {
   }
 
   private initializeRoutes(): void {
+     this.app.get("/", (_req, res) => {
+      res.status(200).json({
+        status: "success",
+        message: "stillo is running...",
+      });
+    });
     this.app.use("/api/v1", routev1);
   }
 }

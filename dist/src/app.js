@@ -32,6 +32,12 @@ class App {
         this.app.use("/uploads", express_1.default.static("uploads"));
     }
     initializeRoutes() {
+        this.app.get("/", (_req, res) => {
+            res.status(200).json({
+                status: "success",
+                message: "stillo is running...",
+            });
+        });
         this.app.use("/api/v1", routev1_1.default);
     }
 }
