@@ -1,4 +1,3 @@
-
 import type { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import userModel from "../models/user.model";

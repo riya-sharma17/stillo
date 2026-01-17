@@ -73,6 +73,7 @@ export const verifyOtp = async (
             });
             isNewUser = true;
         }
+        
         // login
         const token = generateToken(user);
 
