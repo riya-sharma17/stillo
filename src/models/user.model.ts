@@ -3,6 +3,27 @@ import { IUser } from "../interfaces/user.interface";
 import { Role, LoginType } from "../utils/enum";
 
 
+const LocationSchema = new Schema(
+    {
+        lat: { type: Number, required: true },
+        lng: { type: Number, required: true },
+        address: String,
+    },
+    { _id: false }
+);
+
+const AddressSchema = new Schema(
+    {
+        label: { type: String, required: true },
+        lat: { type: Number, required: true },
+        lng: { type: Number, required: true },
+        address: String,
+        isDefault: { type: Boolean, default: false },
+    },
+    { timestamps: true }
+);
+
+
 const userSchema = new Schema<IUser>(
     {
         phoneNumber: {
@@ -28,6 +49,10 @@ const userSchema = new Schema<IUser>(
             type: Boolean,
             default: false,
         },
+
+        location: LocationSchema,
+
+        addresses: [AddressSchema],
     },
     {
         timestamps: true,

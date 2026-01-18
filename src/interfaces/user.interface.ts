@@ -1,4 +1,6 @@
 import { Role, LoginType } from "../utils/enum";
+import { IUserAddress } from "./address.interface";
+import { ILocation } from "./location.interface";
 
 
 export interface IUser {
@@ -9,6 +11,8 @@ export interface IUser {
 
     role: Role;
     isVerified: boolean;
+    location?: ILocation;
+    addresses?: IUserAddress[];
 
     createdAt?: Date;
     updatedAt?: Date;

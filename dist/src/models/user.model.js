@@ -35,6 +35,18 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
 const enum_1 = require("../utils/enum");
+const LocationSchema = new mongoose_1.Schema({
+    lat: { type: Number, required: true },
+    lng: { type: Number, required: true },
+    address: String,
+}, { _id: false });
+const AddressSchema = new mongoose_1.Schema({
+    label: { type: String, required: true },
+    lat: { type: Number, required: true },
+    lng: { type: Number, required: true },
+    address: String,
+    isDefault: { type: Boolean, default: false },
+}, { timestamps: true });
 const userSchema = new mongoose_1.Schema({
     phoneNumber: {
         type: String,
@@ -56,6 +68,8 @@ const userSchema = new mongoose_1.Schema({
         type: Boolean,
         default: false,
     },
+    location: LocationSchema,
+    addresses: [AddressSchema],
 }, {
     timestamps: true,
     collection: "users",
