@@ -13,6 +13,10 @@ exports.SUCCESS_RESPONSE = {
     DEFAULT_ADDRESS_UPDATED: "Default address updated successfully",
     INITIAL_LOCATION_SET: "Initial location set successfully",
     LOCATION_UPDATED: "Location updated successfully",
+    PRODUCT_DELETED: "Product deleted successfully",
+    PRODUCT_UPDATED: "Product updated successfully",
+    PRODUCT_CREATED: "Product created successfully",
+    PRODUCTS_FETCHED: "Products fetched successfully",
 };
 exports.ERROR_RESPONSE = {
     PHONE_REQUIRED: "Phone number is required",
@@ -22,5 +26,11 @@ exports.ERROR_RESPONSE = {
     ADDRESS_NOT_FOUND: "Address not found",
     USER_NOT_FOUND: "User not found",
     BOTH_LAT_LNG_REQUIRED: "Both latitude and longitude are required",
+    FILE_UPLOAD_ERROR: "Error uploading file",
+    PRODUCT_NOT_FOUND: "Product not found",
+    MIN_PRODUCT_PRICE: "Product price must be at least 45",
+    MIN_PRODUCT_IMAGES: "At least 3 product images are required",
+    INVALID_SUBCATEGORY: "Invalid sub-category for selected category",
+    INVALID_CATEGORY: "Invalid product category",
 };
 //# sourceMappingURL=message.js.map
