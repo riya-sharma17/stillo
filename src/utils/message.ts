@@ -19,5 +19,6 @@ export const ERROR_RESPONSE = {
     UNAUTHORIZED: "Unauthorized access",
     ADDRESS_NOT_FOUND: "Address not found",
     USER_NOT_FOUND: "User not found",
+    BOTH_LAT_LNG_REQUIRED: "Both latitude and longitude are required",
 };
 

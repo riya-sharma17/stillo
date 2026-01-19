@@ -1,6 +1,6 @@
 import { ILocation } from "./location.interface";
 
-export interface IUserAddress extends ILocation {
+export interface IUserAddress{
   _id?: string;
   label: string; // Home, Work, Other
   isDefault?: boolean;

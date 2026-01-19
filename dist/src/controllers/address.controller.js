@@ -54,6 +54,11 @@ const addAddress = async (req, res, next) => {
         const user = res.locals.user;
         const { label, lat, lng, address, makeDefault } = req.body;
         const currentUser = await user_model_1.default.findById(user._id);
+        if ((lat && !lng) || (!lat && lng)) {
+            return res.status(400).json({
+                message: message_1.ERROR_RESPONSE.BOTH_LAT_LNG_REQUIRED,
+            });
+        }
         if (!currentUser) {
             return res.status(404).json({
                 message: message_1.ERROR_RESPONSE.USER_NOT_FOUND,

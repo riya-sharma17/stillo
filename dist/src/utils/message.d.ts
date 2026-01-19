@@ -18,5 +18,6 @@ export declare const ERROR_RESPONSE: {
     UNAUTHORIZED: string;
     ADDRESS_NOT_FOUND: string;
     USER_NOT_FOUND: string;
+    BOTH_LAT_LNG_REQUIRED: string;
 };
 //# sourceMappingURL=message.d.ts.map

@@ -11,8 +11,8 @@ exports.addAddressValidation = joi_1.default.object({
         .messages({
         "string.empty": "Label is required",
     }),
-    lat: joi_1.default.number().required(),
-    lng: joi_1.default.number().required(),
+    lat: joi_1.default.number().optional(),
+    lng: joi_1.default.number().optional(),
     address: joi_1.default.string().allow("").optional(),
     makeDefault: joi_1.default.boolean().optional(),
 });

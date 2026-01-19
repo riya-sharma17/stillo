@@ -7,8 +7,8 @@ export const addAddressValidation = Joi.object({
       "string.empty": "Label is required",
     }),
 
-  lat: Joi.number().required(),
-  lng: Joi.number().required(),
+  lat: Joi.number().optional(),
+  lng: Joi.number().optional(),
 
   address: Joi.string().allow("").optional(),
   makeDefault: Joi.boolean().optional(),

@@ -60,59 +60,65 @@ export const getAddresses = async (
 
 // ADD ADDRESS
 export const addAddress = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
+    req: Request,
+    res: Response,
+    next: NextFunction
 ) => {
-  try {
-    const user = res.locals.user;
-    const { label, lat, lng, address, makeDefault } = req.body;
+    try {
+        const user = res.locals.user;
+        const { label, lat, lng, address, makeDefault } = req.body;
 
-    const currentUser = await userModel.findById(user._id);
+        const currentUser = await userModel.findById(user._id);
 
-    if (!currentUser) {
-      return res.status(404).json({
-        message: ERROR_RESPONSE.USER_NOT_FOUND,
-      });
+        if ((lat && !lng) || (!lat && lng)) {
+            return res.status(400).json({
+                message: ERROR_RESPONSE.BOTH_LAT_LNG_REQUIRED,
+            });
+        }
+
+        if (!currentUser) {
+            return res.status(404).json({
+                message: ERROR_RESPONSE.USER_NOT_FOUND,
+            });
+        }
+
+        const hasAddresses =
+            Array.isArray(currentUser.addresses) &&
+            currentUser.addresses.length > 0;
+
+        const shouldBeDefault = !hasAddresses || makeDefault === true;
+
+        // Unset previous default ONLY if addresses exist
+        if (hasAddresses && shouldBeDefault) {
+            await userModel.updateOne(
+                { _id: user._id },
+                { $set: { "addresses.$[].isDefault": false } }
+            );
+        }
+
+        const updatedUser = await userModel.findByIdAndUpdate(
+            user._id,
+            {
+                $push: {
+                    addresses: {
+                        label,
+                        lat,
+                        lng,
+                        address,
+                        isDefault: shouldBeDefault,
+                    },
+                },
+            },
+            { new: true }
+        );
+
+        return res.status(201).json({
+            message: SUCCESS_RESPONSE.ADDRESS_ADDED,
+            data: updatedUser?.addresses || [],
+        });
+    } catch (error) {
+        next(error);
     }
-
-    const hasAddresses =
-      Array.isArray(currentUser.addresses) &&
-      currentUser.addresses.length > 0;
-
-    const shouldBeDefault = !hasAddresses || makeDefault === true;
-
-    // Unset previous default ONLY if addresses exist
-    if (hasAddresses && shouldBeDefault) {
-      await userModel.updateOne(
-        { _id: user._id },
-        { $set: { "addresses.$[].isDefault": false } }
-      );
-    }
-
-    const updatedUser = await userModel.findByIdAndUpdate(
-      user._id,
-      {
-        $push: {
-          addresses: {
-            label,
-            lat,
-            lng,
-            address,
-            isDefault: shouldBeDefault,
-          },
-        },
-      },
-      { new: true }
-    );
-
-    return res.status(201).json({
-      message: SUCCESS_RESPONSE.ADDRESS_ADDED,
-      data: updatedUser?.addresses || [],
-    });
-  } catch (error) {
-    next(error);
-  }
 };
 
 // DELETE ADDRESS
