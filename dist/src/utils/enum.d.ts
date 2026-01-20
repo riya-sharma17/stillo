@@ -5,6 +5,11 @@ export declare enum Role {
 export declare enum LoginType {
     NUMBER = "number"
 }
+export declare enum ProductCondition {
+    NEW = "new",
+    LIKE_NEW = "like_new",
+    USED = "used"
+}
 export declare enum ProductCategory {
     ELECTRONICS = "electronics",
     MOBILES = "mobiles",

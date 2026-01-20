@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.setDefaultAddress = exports.deleteAddress = exports.addAddress = exports.getAddresses = exports.setInitialLocation = void 0;
 const user_model_1 = __importDefault(require("../models/user.model"));
 const message_1 = require("../utils/message");
+const product_model_1 = __importDefault(require("../models/product.model"));
 // SET INITIAL LOCATION (CURRENT LOCATION ONLY)
 const setInitialLocation = async (req, res, next) => {
     try {
@@ -136,6 +137,12 @@ const setDefaultAddress = async (req, res, next) => {
         if (!exists) {
             return res.status(404).json({
                 message: message_1.ERROR_RESPONSE.ADDRESS_NOT_FOUND,
+            });
+        }
+        const usedInProduct = await product_model_1.default.exists({ addressId });
+        if (usedInProduct) {
+            return res.status(400).json({
+                message: message_1.ERROR_RESPONSE.ADDRESS_USED_IN_PRODUCT,
             });
         }
         // unset previous default

@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { ProductCategory } from "../utils/enum";
+import { ProductCategory, ProductCondition} from "../utils/enum";
 
 export interface IProductLocation {
     lat: number;
@@ -12,7 +12,8 @@ export interface IProduct {
     title: string;
     description?: string;
     price: number;
-    address: string;
+    addressId: Types.ObjectId;
+    condition: ProductCondition;
 
     category: ProductCategory;
     subCategory: string;

@@ -57,12 +57,17 @@ const ProductSchema = new mongoose_1.Schema({
         enum: Object.values(enum_1.ProductCategory),
         required: true,
     },
+    condition: {
+        type: String,
+        enum: Object.values(enum_1.ProductCondition),
+        required: true,
+    },
     subCategory: {
         type: String,
         required: true,
     },
-    address: {
-        type: String,
+    addressId: {
+        type: mongoose_1.Schema.Types.ObjectId,
         required: true,
     },
     images: {

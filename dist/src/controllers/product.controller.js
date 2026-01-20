@@ -8,25 +8,53 @@ const product_model_1 = __importDefault(require("../models/product.model"));
 const uploadToCloudinary_1 = require("../utils/uploadToCloudinary");
 const categoryMap_1 = require("../utils/categoryMap");
 const message_1 = require("../utils/message");
+const user_model_1 = __importDefault(require("../models/user.model"));
+const distance_1 = require("../utils/distance");
+const getViewerLocation = async (req, userId) => {
+    // live GPS 
+    if (req.query.lat && req.query.lng) {
+        return {
+            lat: Number(req.query.lat),
+            lng: Number(req.query.lng),
+        };
+    }
+    // Logged-in user 
+    if (userId) {
+        const user = await user_model_1.default.findById(userId).lean();
+        if (user?.location?.lat && user?.location?.lng) {
+            return {
+                lat: user.location.lat,
+                lng: user.location.lng,
+            };
+        }
+        const defaultAddress = user?.addresses?.find(a => a.isDefault);
+        if (defaultAddress) {
+            return {
+                lat: defaultAddress.lat,
+                lng: defaultAddress.lng,
+            };
+        }
+    }
+    return null;
+};
+// CREATE PRODUCT
 const createProduct = async (req, res, next) => {
     try {
         const user = res.locals.user;
-        const { title, description, price, address, category, subCategory, lat, lng, } = req.body;
-        if ((lat && !lng) || (!lat && lng)) {
-            return res.status(400).json({
-                message: message_1.ERROR_RESPONSE.BOTH_LAT_LNG_REQUIRED,
-            });
-        }
-        //CATEGORY → SUBCATEGORY VALIDATION 
-        const allowedSubCategories = categoryMap_1.CategorySubCategoryMap[category];
-        if (!allowedSubCategories) {
-            return res.status(400).json({
-                message: message_1.ERROR_RESPONSE.INVALID_CATEGORY,
-            });
-        }
-        if (!allowedSubCategories.includes(subCategory)) {
+        const { title, description, price, addressId, category, condition, subCategory, } = req.body;
+        const allowedSubs = categoryMap_1.CategorySubCategoryMap[category];
+        if (!allowedSubs || !allowedSubs.includes(subCategory)) {
             return res.status(400).json({
                 message: message_1.ERROR_RESPONSE.INVALID_SUBCATEGORY,
+            });
+        }
+        const addressExists = await user_model_1.default.findOne({
+            _id: user._id,
+            "addresses._id": addressId,
+        });
+        if (!addressExists) {
+            return res.status(400).json({
+                message: message_1.ERROR_RESPONSE.ADDRESS_NOT_FOUND,
             });
         }
         // FILE VALIDATION 
@@ -54,13 +82,13 @@ const createProduct = async (req, res, next) => {
             title,
             description,
             price,
-            address,
+            addressId,
             category,
+            condition,
             subCategory,
             images: imageUrls,
             videos: videoUrls,
-            seller: user._id,
-            location: lat && lng ? { lat, lng } : undefined,
+            seller: user._id
         });
         return res.status(201).json({
             message: message_1.SUCCESS_RESPONSE.PRODUCT_CREATED,
@@ -72,17 +100,20 @@ const createProduct = async (req, res, next) => {
     }
 };
 exports.createProduct = createProduct;
-// GET ALL PRODUCTS
 const getAllProducts = async (req, res, next) => {
     try {
+        const viewerLocation = await getViewerLocation(req, res.locals.user?._id);
         const products = await product_model_1.default
             .find({ isActive: true })
-            .sort({ createdAt: -1 })
-            .populate("seller", "phoneNumber role")
+            .select("title price category images location createdAt")
             .lean();
-        return res.status(200).json({
-            data: products,
-        });
+        const response = products.map(product => ({
+            ...product,
+            distance: viewerLocation && product.location
+                ? (0, distance_1.calculateDistanceAndETA)(viewerLocation, product.location)
+                : null,
+        }));
+        return res.status(200).json({ data: response });
     }
     catch (error) {
         next(error);
@@ -95,7 +126,7 @@ const getProductById = async (req, res, next) => {
         const { productId } = req.params;
         const product = await product_model_1.default
             .findById(productId)
-            .populate("seller", "phoneNumber role")
+            .populate("seller")
             .lean();
         if (!product) {
             return res.status(404).json({
@@ -116,7 +147,7 @@ const editProduct = async (req, res, next) => {
     try {
         const user = res.locals.user;
         const { productId } = req.params;
-        const { title, description, price, address, category, subCategory, } = req.body;
+        const { title, description, price, category, subCategory, } = req.body;
         const product = await product_model_1.default.findOne({
             _id: productId,
             seller: user._id,
@@ -138,8 +169,6 @@ const editProduct = async (req, res, next) => {
             product.description = description;
         if (price)
             product.price = price;
-        if (address)
-            product.address = address;
         if (category)
             product.category = category;
         if (subCategory)

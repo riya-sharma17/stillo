@@ -1,15 +1,5 @@
 import Joi from "joi";
-import { ProductCategory } from "../utils/enum";
-
-const latLngTogether = (value: any, helpers: Joi.CustomHelpers) => {
-    const { lat, lng } = value;
-
-    if ((lat && !lng) || (!lat && lng)) {
-        return helpers.error("any.custom");
-    }
-
-    return value;
-};
+import { ProductCategory, ProductCondition } from "../utils/enum";
 
 export const createProductValidation = Joi.object({
     title: Joi.string()
@@ -18,6 +8,13 @@ export const createProductValidation = Joi.object({
         .required()
         .messages({
             "string.empty": "Product title is required",
+        }),
+
+    condition: Joi.string()
+        .valid(...Object.values(ProductCondition))
+        .required()
+        .messages({
+            "any.only": "Invalid product condition",
         }),
 
     description: Joi.string()
@@ -30,12 +27,7 @@ export const createProductValidation = Joi.object({
 
     price: Joi.number().min(0).required(),
 
-    address: Joi.string()
-        .min(5)
-        .required()
-        .messages({
-            "string.empty": "Address is required",
-        }),
+    addressId: Joi.string().length(24).hex().required(),
 
     category: Joi.string()
         .valid(...Object.values(ProductCategory))
@@ -50,15 +42,7 @@ export const createProductValidation = Joi.object({
             "string.empty": "Sub-category is required",
         }),
 
-
-    lat: Joi.number().optional(),
-    lng: Joi.number().optional(),
-})
-    .custom(latLngTogether)
-    .messages({
-        "any.custom": "Both latitude and longitude must be provided together",
-    });
-
+});
 
 export const editProductValidation = Joi.object({
     title: Joi.string().min(3).max(100).optional(),

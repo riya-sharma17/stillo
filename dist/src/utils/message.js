@@ -32,5 +32,6 @@ exports.ERROR_RESPONSE = {
     MIN_PRODUCT_IMAGES: "At least 3 product images are required",
     INVALID_SUBCATEGORY: "Invalid sub-category for selected category",
     INVALID_CATEGORY: "Invalid product category",
+    ADDRESS_USED_IN_PRODUCT: "Address is in use by a product",
 };
 //# sourceMappingURL=message.js.map

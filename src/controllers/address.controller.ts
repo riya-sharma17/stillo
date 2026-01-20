@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import userModel from "../models/user.model";
 import { SUCCESS_RESPONSE, ERROR_RESPONSE } from "../utils/message";
+import productModel from "../models/product.model";
 
 // SET INITIAL LOCATION (CURRENT LOCATION ONLY)
 export const setInitialLocation = async (
@@ -189,6 +190,14 @@ export const setDefaultAddress = async (
         if (!exists) {
             return res.status(404).json({
                 message: ERROR_RESPONSE.ADDRESS_NOT_FOUND,
+            });
+        }
+        
+        const usedInProduct = await productModel.exists({ addressId });
+
+        if (usedInProduct) {
+            return res.status(400).json({
+                message: ERROR_RESPONSE.ADDRESS_USED_IN_PRODUCT,
             });
         }
 

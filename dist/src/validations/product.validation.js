@@ -6,13 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.productIdParamValidation = exports.editProductValidation = exports.createProductValidation = void 0;
 const joi_1 = __importDefault(require("joi"));
 const enum_1 = require("../utils/enum");
-const latLngTogether = (value, helpers) => {
-    const { lat, lng } = value;
-    if ((lat && !lng) || (!lat && lng)) {
-        return helpers.error("any.custom");
-    }
-    return value;
-};
 exports.createProductValidation = joi_1.default.object({
     title: joi_1.default.string()
         .min(3)
@@ -20,6 +13,12 @@ exports.createProductValidation = joi_1.default.object({
         .required()
         .messages({
         "string.empty": "Product title is required",
+    }),
+    condition: joi_1.default.string()
+        .valid(...Object.values(enum_1.ProductCondition))
+        .required()
+        .messages({
+        "any.only": "Invalid product condition",
     }),
     description: joi_1.default.string()
         .min(10)
@@ -29,12 +28,7 @@ exports.createProductValidation = joi_1.default.object({
         "string.empty": "Product description is required",
     }),
     price: joi_1.default.number().min(0).required(),
-    address: joi_1.default.string()
-        .min(5)
-        .required()
-        .messages({
-        "string.empty": "Address is required",
-    }),
+    addressId: joi_1.default.string().length(24).hex().required(),
     category: joi_1.default.string()
         .valid(...Object.values(enum_1.ProductCategory))
         .required()
@@ -46,12 +40,6 @@ exports.createProductValidation = joi_1.default.object({
         .messages({
         "string.empty": "Sub-category is required",
     }),
-    lat: joi_1.default.number().optional(),
-    lng: joi_1.default.number().optional(),
-})
-    .custom(latLngTogether)
-    .messages({
-    "any.custom": "Both latitude and longitude must be provided together",
 });
 exports.editProductValidation = joi_1.default.object({
     title: joi_1.default.string().min(3).max(100).optional(),

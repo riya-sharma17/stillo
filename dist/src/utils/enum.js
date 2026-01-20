@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OtherSubCategory = exports.SportsSubCategory = exports.BookSubCategory = exports.HomeAppliancesSubCategory = exports.FashionSubCategory = exports.FurnitureSubCategory = exports.VehicleSubCategory = exports.MobileSubCategory = exports.ElectronicsSubCategory = exports.ProductCategory = exports.LoginType = exports.Role = void 0;
+exports.OtherSubCategory = exports.SportsSubCategory = exports.BookSubCategory = exports.HomeAppliancesSubCategory = exports.FashionSubCategory = exports.FurnitureSubCategory = exports.VehicleSubCategory = exports.MobileSubCategory = exports.ElectronicsSubCategory = exports.ProductCategory = exports.ProductCondition = exports.LoginType = exports.Role = void 0;
 var Role;
 (function (Role) {
     Role["USER"] = "user";
@@ -10,6 +10,12 @@ var LoginType;
 (function (LoginType) {
     LoginType["NUMBER"] = "number";
 })(LoginType || (exports.LoginType = LoginType = {}));
+var ProductCondition;
+(function (ProductCondition) {
+    ProductCondition["NEW"] = "new";
+    ProductCondition["LIKE_NEW"] = "like_new";
+    ProductCondition["USED"] = "used";
+})(ProductCondition || (exports.ProductCondition = ProductCondition = {}));
 var ProductCategory;
 (function (ProductCategory) {
     ProductCategory["ELECTRONICS"] = "electronics";

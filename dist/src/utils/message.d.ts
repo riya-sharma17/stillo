@@ -29,5 +29,6 @@ export declare const ERROR_RESPONSE: {
     MIN_PRODUCT_IMAGES: string;
     INVALID_SUBCATEGORY: string;
     INVALID_CATEGORY: string;
+    ADDRESS_USED_IN_PRODUCT: string;
 };
 //# sourceMappingURL=message.d.ts.map

@@ -7,6 +7,12 @@ export enum LoginType {
   NUMBER = "number",
 }
 
+export enum ProductCondition {
+  NEW = "new",
+  LIKE_NEW = "like_new",
+  USED = "used",
+}
+
 export enum ProductCategory {
   ELECTRONICS = "electronics",
   MOBILES = "mobiles",

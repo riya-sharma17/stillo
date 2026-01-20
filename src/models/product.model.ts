@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import { IProduct } from "../interfaces/product.interface";
-import { ProductCategory } from "../utils/enum";
+import { ProductCategory, ProductCondition } from "../utils/enum";
 
 const ProductLocationSchema = new Schema(
     {
@@ -33,13 +33,19 @@ const ProductSchema = new Schema<IProduct>(
             required: true,
         },
 
+        condition: {
+            type: String,
+            enum: Object.values(ProductCondition),
+            required: true,
+        },
+
         subCategory: {
             type: String,
             required: true,
         },
 
-        address: {
-            type: String,
+        addressId: {
+            type: Schema.Types.ObjectId,
             required: true,
         },
 
