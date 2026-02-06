@@ -30,5 +30,6 @@ export declare const ERROR_RESPONSE: {
     INVALID_SUBCATEGORY: string;
     INVALID_CATEGORY: string;
     ADDRESS_USED_IN_PRODUCT: string;
+    INVALID_ADDRESS_DATA: string;
 };
 //# sourceMappingURL=message.d.ts.map

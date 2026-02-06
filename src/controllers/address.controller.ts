@@ -67,13 +67,19 @@ export const addAddress = async (
 ) => {
     try {
         const user = res.locals.user;
-        const { label, lat, lng, address, makeDefault } = req.body;
+        const { label, lat, lng, address, city, state, makeDefault } = req.body;
 
         const currentUser = await userModel.findById(user._id);
 
         if ((lat && !lng) || (!lat && lng)) {
             return res.status(400).json({
                 message: ERROR_RESPONSE.BOTH_LAT_LNG_REQUIRED,
+            });
+        }
+
+        if (!city || !state) {
+            return res.status(400).json({
+                message: ERROR_RESPONSE.INVALID_ADDRESS_DATA,
             });
         }
 
@@ -106,11 +112,13 @@ export const addAddress = async (
                         lat,
                         lng,
                         address,
+                        city,
+                        state,
                         isDefault: shouldBeDefault,
                     },
                 },
             },
-            { new: true }
+              { new: true, runValidators: true } 
         );
 
         return res.status(201).json({
@@ -192,7 +200,7 @@ export const setDefaultAddress = async (
                 message: ERROR_RESPONSE.ADDRESS_NOT_FOUND,
             });
         }
-        
+
         const usedInProduct = await productModel.exists({ addressId });
 
         if (usedInProduct) {

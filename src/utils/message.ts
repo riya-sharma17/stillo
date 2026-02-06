@@ -31,5 +31,6 @@ export const ERROR_RESPONSE = {
     INVALID_SUBCATEGORY: "Invalid sub-category for selected category",
     INVALID_CATEGORY: "Invalid product category",
     ADDRESS_USED_IN_PRODUCT: "Address is in use by a product",
+    INVALID_ADDRESS_DATA: "Invalid address data",
 };
 

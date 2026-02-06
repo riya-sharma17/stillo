@@ -3,5 +3,7 @@ import { ILocation } from "./location.interface";
 export interface IUserAddress extends ILocation {
   _id?: string;
   label: string; // Home, Work, Other
+  state: string;
+  city: string;
   isDefault?: boolean;
 }

@@ -41,10 +41,12 @@ const LocationSchema = new mongoose_1.Schema({
     address: String,
 }, { _id: false });
 const AddressSchema = new mongoose_1.Schema({
-    label: { type: String, required: true },
+    label: { type: String, required: false },
     lat: { type: Number, required: true },
     lng: { type: Number, required: true },
     address: String,
+    state: { type: String, required: true },
+    city: { type: String, required: true },
     isDefault: { type: Boolean, default: false },
 }, { timestamps: true });
 const userSchema = new mongoose_1.Schema({

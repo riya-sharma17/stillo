@@ -14,10 +14,12 @@ const LocationSchema = new Schema(
 
 const AddressSchema = new Schema(
     {
-        label: { type: String, required: true },
+        label: { type: String, required: false },
         lat: { type: Number, required: true },
         lng: { type: Number, required: true },
         address: String,
+        state: { type: String, required: true },
+        city: { type: String, required: true },
         isDefault: { type: Boolean, default: false },
     },
     { timestamps: true }

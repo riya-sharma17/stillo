@@ -7,12 +7,15 @@ exports.initialLocationValidation = exports.addressIdParamValidation = exports.a
 const joi_1 = __importDefault(require("joi"));
 exports.addAddressValidation = joi_1.default.object({
     label: joi_1.default.string()
-        .required()
+        .optional()
+        .allow("")
         .messages({
-        "string.empty": "Label is required",
+        "string.base": "Label must be a string",
     }),
     lat: joi_1.default.number().optional(),
     lng: joi_1.default.number().optional(),
+    city: joi_1.default.string().required(),
+    state: joi_1.default.string().required(),
     address: joi_1.default.string().allow("").optional(),
     makeDefault: joi_1.default.boolean().optional(),
 });

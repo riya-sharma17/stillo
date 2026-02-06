@@ -2,13 +2,16 @@ import Joi from "joi";
 
 export const addAddressValidation = Joi.object({
   label: Joi.string()
-    .required()
+    .optional()
+    .allow("")
     .messages({
-      "string.empty": "Label is required",
+      "string.base": "Label must be a string",
     }),
 
   lat: Joi.number().optional(),
   lng: Joi.number().optional(),
+  city: Joi.string().required(),
+  state: Joi.string().required(),
 
   address: Joi.string().allow("").optional(),
   makeDefault: Joi.boolean().optional(),

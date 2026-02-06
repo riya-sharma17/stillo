@@ -53,11 +53,16 @@ exports.getAddresses = getAddresses;
 const addAddress = async (req, res, next) => {
     try {
         const user = res.locals.user;
-        const { label, lat, lng, address, makeDefault } = req.body;
+        const { label, lat, lng, address, city, state, makeDefault } = req.body;
         const currentUser = await user_model_1.default.findById(user._id);
         if ((lat && !lng) || (!lat && lng)) {
             return res.status(400).json({
                 message: message_1.ERROR_RESPONSE.BOTH_LAT_LNG_REQUIRED,
+            });
+        }
+        if (!city || !state) {
+            return res.status(400).json({
+                message: message_1.ERROR_RESPONSE.INVALID_ADDRESS_DATA,
             });
         }
         if (!currentUser) {
@@ -79,10 +84,12 @@ const addAddress = async (req, res, next) => {
                     lat,
                     lng,
                     address,
+                    city,
+                    state,
                     isDefault: shouldBeDefault,
                 },
             },
-        }, { new: true });
+        }, { new: true, runValidators: true });
         return res.status(201).json({
             message: message_1.SUCCESS_RESPONSE.ADDRESS_ADDED,
             data: updatedUser?.addresses || [],
